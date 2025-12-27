@@ -10,13 +10,42 @@
       background: #050505;
       color: #e0e0e0;
       overflow-x: hidden;
-    }.center {
+    }.top-bar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #070707;
+  border-bottom: 1px solid #111;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+}
+
+.top-bar span {
+  opacity: 0.8;
+}
+
+.shop-btn {
+  cursor: pointer;
+  border: 1px solid #333;
+  padding: 8px 20px;
+  transition: 0.3s;
+}
+
+.shop-btn:hover {
+  background: #111;
+}
+
+.center {
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+  padding-top: 60px;
 }
 
 h1 {
@@ -26,20 +55,34 @@ h1 {
 }
 
 .typing {
-  font-size: 1.1rem;
-  background: #0d0d0d;
-  border: 1px solid #222;
-  padding: 15px;
-  width: 80%;
-  max-width: 600px;
-  min-height: 80px;
+  font-size: 1rem;
+  background: #0b0b0b;
+  border: 1px solid #1a1a1a;
+  padding: 20px;
+  width: 85%;
+  max-width: 700px;
+  min-height: 120px;
   margin-top: 20px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.7);
+  box-shadow: 0 0 25px rgba(0,0,0,0.8);
+  text-align: left;
+  direction: ltr;
 }
 
-.shop-section {
-  padding: 80px 20px;
-  background: #070707;
+.shop-panel {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  height: 100vh;
+  background: #060606;
+  transition: 0.5s;
+  padding: 100px 20px;
+  overflow-y: auto;
+  z-index: 999;
+}
+
+.shop-panel.active {
+  right: 0;
 }
 
 .shop-title {
@@ -66,12 +109,11 @@ h1 {
 
 .card h3 {
   margin-bottom: 15px;
-  font-size: 1.3rem;
 }
 
 .price {
   margin-bottom: 20px;
-  color: #aaa;
+  color: #999;
 }
 
 .buy {
@@ -83,60 +125,48 @@ h1 {
   transition: 0.3s;
 }
 
-.buy:hover {
-  background: #111;
-  border-color: #555;
-}
+.buy:hover { background: #111; }
 
-.shop-link {
+.close {
   position: absolute;
-  bottom: 30px;
-  font-size: 1.2rem;
+  top: 30px;
+  left: 30px;
   cursor: pointer;
   opacity: 0.7;
 }
 
-.shop-link:hover { opacity: 1; }
-
   </style>
 </head>
-<body>  <div class="center">
+<body>  <div class="top-bar">
+    <span>shawarma dev</span>
+    <div class="shop-btn" onclick="toggleShop()">SHOP</div>
+  </div>  <div class="center">
     <h1 id="name"></h1>
     <div class="typing" id="codeBox"></div>
-    <div class="shop-link" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">
-      SHOP
-    </div>
-  </div>  <section class="shop-section" id="shop">
+  </div>  <div class="shop-panel" id="shopPanel">
+    <div class="close" onclick="toggleShop()">CLOSE</div>
     <div class="shop-title">الشوب</div>
     <div class="cards">
       <div class="card">
-        <h3>بوت واتس شهري</h3>
-        <div class="price">100 جنيه</div>
+        <h3>أكواد ألعاب</h3>
+        <div class="price">غير محدد</div>
         <a class="buy" href="https://wa.me/201550680822" target="_blank">شراء</a>
-      </div><div class="card">
-    <h3>بوت واتس مفصل</h3>
-    <div class="price">السعر غير محدد</div>
-    <a class="buy" href="https://wa.me/201550680822" target="_blank">شراء</a>
-  </div>
-
-  <div class="card">
-    <h3>موقع</h3>
-    <div class="price">غير محدد</div>
-    <a class="buy" href="https://wa.me/201550680822" target="_blank">شراء</a>
-  </div>
-
-  <div class="card">
-    <h3>دومين</h3>
-    <div class="price">غير محدد</div>
-    <a class="buy" href="https://wa.me/201550680822" target="_blank">شراء</a>
-  </div>
-</div>
-
-  </section>  <script>
+      </div>
+      <div class="card">
+        <h3>أكواد حسابات</h3>
+        <div class="price">غير محدد</div>
+        <a class="buy" href="https://wa.me/201550680822" target="_blank">شراء</a>
+      </div>
+      <div class="card">
+        <h3>سكريبتات خاصة</h3>
+        <div class="price">غير محدد</div>
+        <a class="buy" href="https://wa.me/201550680822" target="_blank">شراء</a>
+      </div>
+    </div>
+  </div>  <script>
     const nameText = "shawarma dev";
     const nameEl = document.getElementById('name');
     let i = 0;
-
     function typeName() {
       if (i < nameText.length) {
         nameEl.textContent += nameText.charAt(i);
@@ -144,14 +174,14 @@ h1 {
         setTimeout(typeName, 120);
       }
     }
-
     typeName();
 
     const codes = [
-      "const bot = new WhatsAppBot();",
-      "bot.on('message', reply);",
-      "connectDatabase();",
-      "deployProduction();"
+`// GAME CONFIG\nplayer.speed = 7;\nplayer.health = 100;\nspawnEnemy('zombie', 5);`,
+`// ACCOUNT DATA\nUSER_ID: X92KD\nLEVEL: 45\nCOINS: 9820`,
+`// MATCH RESULT\nKILLS: 12\nDEATHS: 2\nRANK: GOLD`,
+`// SYSTEM LOG\nACCESS GRANTED\nSESSION ACTIVE\nPING: 23ms`,
+`// INVENTORY\nAK47 | LVL 3\nARMOR | RARE\nMEDKIT x5`
     ];
 
     const box = document.getElementById('codeBox');
@@ -162,17 +192,20 @@ h1 {
       if (charIndex < codes[codeIndex].length) {
         box.textContent += codes[codeIndex].charAt(charIndex);
         charIndex++;
-        setTimeout(typeCode, 50);
+        setTimeout(typeCode, 25);
       } else {
         setTimeout(() => {
           box.textContent = "";
           charIndex = 0;
           codeIndex = (codeIndex + 1) % codes.length;
           typeCode();
-        }, 800);
+        }, 900);
       }
     }
+    setTimeout(typeCode, 1200);
 
-    setTimeout(typeCode, 1500);
+    function toggleShop() {
+      document.getElementById('shopPanel').classList.toggle('active');
+    }
   </script></body>
 </html>
