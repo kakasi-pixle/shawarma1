@@ -1,211 +1,310 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Shawarma Dev</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      margin: 0;
-      font-family: monospace;
-      background: #050505;
-      color: #e0e0e0;
-      overflow-x: hidden;
-    }.top-bar {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background: #070707;
-  border-bottom: 1px solid #111;
-  padding: 15px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 1000;
-}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <style>
+    :root{
+      --bg:#050505;
+      --panel:#0b0b0b;
+      --border:#1a1a1a;
+      --text:#e6e6e6;
+      --muted:#9a9a9a;
+      --accent:#00ff9c;
+      --accent-soft:rgba(0,255,156,.15);
+    }
 
-.top-bar span {
-  opacity: 0.8;
-}
+    *{box-sizing:border-box}
 
-.shop-btn {
-  cursor: pointer;
-  border: 1px solid #333;
-  padding: 8px 20px;
-  transition: 0.3s;
-}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:ui-monospace, SFMono-Regular, Menlo, monospace;
+      overflow-x:hidden;
+    }
 
-.shop-btn:hover {
-  background: #111;
-}
+    /* TOP BAR */
+    .top{
+      position:fixed;
+      top:0;left:0;right:0;
+      height:64px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 22px;
+      background:linear-gradient(180deg,#0a0a0a,#060606);
+      border-bottom:1px solid var(--border);
+      z-index:1000;
+    }
 
-.center {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding-top: 60px;
-}
+    .logo{
+      font-weight:600;
+      letter-spacing:1px;
+      color:var(--accent);
+      text-shadow:0 0 12px var(--accent-soft);
+    }
 
-h1 {
-  font-size: 3rem;
-  letter-spacing: 2px;
-  margin-bottom: 20px;
-}
+    .shop-trigger{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      padding:8px 14px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:#0a0a0a;
+      transition:.25s;
+    }
 
-.typing {
-  font-size: 1rem;
-  background: #0b0b0b;
-  border: 1px solid #1a1a1a;
-  padding: 20px;
-  width: 85%;
-  max-width: 700px;
-  min-height: 120px;
-  margin-top: 20px;
-  box-shadow: 0 0 25px rgba(0,0,0,0.8);
-  text-align: left;
-  direction: ltr;
-}
+    .shop-trigger:hover{
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px var(--accent-soft);
+    }
 
-.shop-panel {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 100%;
-  height: 100vh;
-  background: #060606;
-  transition: 0.5s;
-  padding: 100px 20px;
-  overflow-y: auto;
-  z-index: 999;
-}
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 0 10px var(--accent);
+    }
 
-.shop-panel.active {
-  right: 0;
-}
+    /* HERO */
+    .hero{
+      min-height:100vh;
+      padding:120px 20px 80px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+    }
 
-.shop-title {
-  font-size: 2rem;
-  margin-bottom: 40px;
-  text-align: center;
-}
+    h1{
+      font-size:clamp(2.2rem,8vw,4.5rem);
+      margin:0 0 25px;
+      letter-spacing:2px;
+    }
 
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 25px;
-  max-width: 1000px;
-  margin: auto;
-}
+    .caret{
+      display:inline-block;
+      width:3px;height:1em;
+      background:var(--accent);
+      margin-left:6px;
+      animation:blink 1s infinite;
+    }
 
-.card {
-  background: #0c0c0c;
-  border: 1px solid #1f1f1f;
-  padding: 25px;
-  text-align: center;
-  box-shadow: 0 0 20px rgba(0,0,0,0.6);
-}
+    @keyframes blink{50%{opacity:0}}
 
-.card h3 {
-  margin-bottom: 15px;
-}
+    /* CODE TERMINAL */
+    .terminal{
+      width:100%;
+      max-width:880px;
+      background:radial-gradient(120% 120% at 50% 0%,#0e0e0e,#080808);
+      border:1px solid var(--border);
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 30px 80px rgba(0,0,0,.8);
+    }
 
-.price {
-  margin-bottom: 20px;
-  color: #999;
-}
+    .term-bar{
+      display:flex;
+      gap:8px;
+      padding:12px;
+      background:#0a0a0a;
+      border-bottom:1px solid var(--border);
+    }
 
-.buy {
-  display: inline-block;
-  padding: 10px 25px;
-  border: 1px solid #333;
-  text-decoration: none;
-  color: #fff;
-  transition: 0.3s;
-}
+    .dot-ui{width:12px;height:12px;border-radius:50%}
+    .r{background:#ff5f56}
+    .y{background:#ffbd2e}
+    .g{background:#27c93f}
 
-.buy:hover { background: #111; }
+    .term-body{
+      padding:22px;
+      font-size:.95rem;
+      line-height:1.6;
+      min-height:220px;
+      text-align:left;
+      direction:ltr;
+      white-space:pre-wrap;
+    }
 
-.close {
-  position: absolute;
-  top: 30px;
-  left: 30px;
-  cursor: pointer;
-  opacity: 0.7;
-}
+    .accent{color:var(--accent)}
 
-  </style>
-</head>
-<body>  <div class="top-bar">
-    <span>shawarma dev</span>
-    <div class="shop-btn" onclick="toggleShop()">SHOP</div>
-  </div>  <div class="center">
-    <h1 id="name"></h1>
-    <div class="typing" id="codeBox"></div>
-  </div>  <div class="shop-panel" id="shopPanel">
-    <div class="close" onclick="toggleShop()">CLOSE</div>
-    <div class="shop-title">الشوب</div>
-    <div class="cards">
-      <div class="card">
-        <h3>أكواد ألعاب</h3>
-        <div class="price">غير محدد</div>
-        <a class="buy" href="https://wa.me/201550680822" target="_blank">شراء</a>
-      </div>
-      <div class="card">
-        <h3>أكواد حسابات</h3>
-        <div class="price">غير محدد</div>
-        <a class="buy" href="https://wa.me/201550680822" target="_blank">شراء</a>
-      </div>
-      <div class="card">
-        <h3>سكريبتات خاصة</h3>
-        <div class="price">غير محدد</div>
-        <a class="buy" href="https://wa.me/201550680822" target="_blank">شراء</a>
-      </div>
+    /* SHOP PANEL */
+    .shop{
+      position:fixed;
+      inset:0;
+      background:rgba(5,5,5,.75);
+      backdrop-filter:blur(6px);
+      display:none;
+      z-index:2000;
+    }
+
+    .shop.active{display:block}
+
+    .shop-box{
+      position:absolute;
+      top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      width:92%;max-width:900px;
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:40px 30px 30px;
+      box-shadow:0 40px 120px rgba(0,0,0,.9);
+    }
+
+    .shop-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:35px;
+    }
+
+    .shop-head h2{
+      margin:0;color:var(--accent);
+    }
+
+    .close{
+      cursor:pointer;
+      opacity:.6;
+      transition:.2s;
+    }
+    .close:hover{opacity:1}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:22px;
+    }
+
+    .card{
+      background:#090909;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:22px;
+      transition:.25s;
+    }
+
+    .card:hover{
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px var(--accent-soft);
+      transform:translateY(-4px);
+    }
+
+    .card h3{margin:0 0 10px}
+    .card p{margin:0 0 18px;color:var(--muted);font-size:.9rem}
+
+    .buy{
+      display:inline-block;
+      padding:10px 18px;
+      border-radius:10px;
+      border:1px solid var(--accent);
+      color:var(--accent);
+      text-decoration:none;
+      transition:.25s;
+    }
+
+    .buy:hover{background:var(--accent);color:#000}
+
+  </style></head>
+<body>  <!-- TOP -->  <div class="top">
+    <div class="logo">shawarma.dev</div>
+    <div class="shop-trigger" onclick="toggleShop()">
+      <div class="dot"></div>
+      <span>SHOP</span>
     </div>
-  </div>  <script>
-    const nameText = "shawarma dev";
-    const nameEl = document.getElementById('name');
-    let i = 0;
-    function typeName() {
-      if (i < nameText.length) {
-        nameEl.textContent += nameText.charAt(i);
-        i++;
-        setTimeout(typeName, 120);
-      }
+  </div>  <!-- HERO -->  <section class="hero">
+    <h1><span id="title"></span><span class="caret"></span></h1><div class="terminal">
+  <div class="term-bar">
+    <div class="dot-ui r"></div>
+    <div class="dot-ui y"></div>
+    <div class="dot-ui g"></div>
+  </div>
+  <div class="term-body" id="terminal"></div>
+</div>
+
+  </section>  <!-- SHOP -->  <div class="shop" id="shop">
+    <div class="shop-box">
+      <div class="shop-head">
+        <h2>SHOP</h2>
+        <div class="close" onclick="toggleShop()">✕</div>
+      </div><div class="grid">
+    <div class="card">
+      <h3>Game Scripts</h3>
+      <p>Lua / JS / C# scripts</p>
+      <a class="buy" href="https://wa.me/201550680822" target="_blank">Buy</a>
+    </div>
+    <div class="card">
+      <h3>Account Tools</h3>
+      <p>Automation & utilities</p>
+      <a class="buy" href="https://wa.me/201550680822" target="_blank">Buy</a>
+    </div>
+    <div class="card">
+      <h3>Private Builds</h3>
+      <p>Custom dev solutions</p>
+      <a class="buy" href="https://wa.me/201550680822" target="_blank">Buy</a>
+    </div>
+  </div>
+</div>
+
+  </div><script>
+  /* TITLE TYPE */
+  const titleText = "shawarma dev";
+  let ti = 0;
+  const titleEl = document.getElementById('title');
+  (function typeTitle(){
+    if(ti < titleText.length){
+      titleEl.textContent += titleText[ti++];
+      setTimeout(typeTitle,120);
     }
-    typeName();
+  })();
 
-    const codes = [
-`// GAME CONFIG\nplayer.speed = 7;\nplayer.health = 100;\nspawnEnemy('zombie', 5);`,
-`// ACCOUNT DATA\nUSER_ID: X92KD\nLEVEL: 45\nCOINS: 9820`,
-`// MATCH RESULT\nKILLS: 12\nDEATHS: 2\nRANK: GOLD`,
-`// SYSTEM LOG\nACCESS GRANTED\nSESSION ACTIVE\nPING: 23ms`,
-`// INVENTORY\nAK47 | LVL 3\nARMOR | RARE\nMEDKIT x5`
-    ];
+  /* REAL CODE SNIPPETS */
+  const snippets = [
+`// Node.js auth middleware
+export function auth(req,res,next){
+  const token = req.headers.authorization;
+  if(!token) return res.status(401).end();
+  jwt.verify(token, SECRET, next);
+}`,
+`// Unity C# player movement
+void Update(){
+  float x = Input.GetAxis("Horizontal");
+  float y = Input.GetAxis("Vertical");
+  transform.Translate(new Vector3(x,0,y)*speed*Time.deltaTime);
+}`,
+`# Python account checker
+for acc in accounts:
+    if login(acc):
+        save_valid(acc)
+    time.sleep(0.2)`,
+`// Lua game hook
+hookfunction(FireServer,function(...)
+  return nil
+end)`
+  ];
 
-    const box = document.getElementById('codeBox');
-    let codeIndex = 0;
-    let charIndex = 0;
+  const term = document.getElementById('terminal');
+  let si=0, ci=0;
 
-    function typeCode() {
-      if (charIndex < codes[codeIndex].length) {
-        box.textContent += codes[codeIndex].charAt(charIndex);
-        charIndex++;
-        setTimeout(typeCode, 25);
-      } else {
-        setTimeout(() => {
-          box.textContent = "";
-          charIndex = 0;
-          codeIndex = (codeIndex + 1) % codes.length;
-          typeCode();
-        }, 900);
-      }
+  function typeCode(){
+    if(ci < snippets[si].length){
+      term.textContent += snippets[si][ci++];
+      setTimeout(typeCode,18);
+    }else{
+      setTimeout(()=>{
+        term.textContent="";
+        ci=0;
+        si=(si+1)%snippets.length;
+        typeCode();
+      },1200);
     }
-    setTimeout(typeCode, 1200);
+  }
+  setTimeout(typeCode,800);
 
-    function toggleShop() {
-      document.getElementById('shopPanel').classList.toggle('active');
-    }
-  </script></body>
+  function toggleShop(){
+    document.getElementById('shop').classList.toggle('active');
+  }
+</script></body>
 </html>
